@@ -58,40 +58,21 @@ export default function MockTest({ questions, onBack }) {
   }, [examState]);
 
   const getTemplateCode = (q) => {
-    const lines = q.referenceCode.split('\n');
-    let inMain = false;
-    let inMethod = false;
-    const skeletonLines = lines.map(line => {
-      if (line.includes('public static void Main') || line.includes('static void Main')) {
-        inMain = true;
-        return line;
-      }
-      if (inMain && line.trim() === '{') {
-        return line + '\n            // Read inputs and write method invocation logic here';
-      }
-      if (inMain && line.trim() === '}') {
-        inMain = false;
-        return line;
-      }
-      if (inMain) return null;
+    return `using System;
+using System.Collections.Generic;
+using System.Linq;
 
-      if (line.includes('public static') && !line.includes('Main')) {
-        inMethod = true;
-        return line;
-      }
-      if (inMethod && line.trim() === '{') {
-        return line + '\n            // Write your business logic here\n            return null;';
-      }
-      if (inMethod && line.trim() === '}') {
-        inMethod = false;
-        return line;
-      }
-      if (inMethod) return null;
-
-      return line;
-    }).filter(l => l !== null);
-
-    return skeletonLines.join('\n');
+namespace Solution
+{
+    class Program
+    {
+        public static void Main(string[] args)
+        {
+            // Write your C# console application here
+            // Read inputs, construct your entity classes, invoke static methods and print outputs
+        }
+    }
+}`;
   };
 
   const handleEditorChange = (val) => {
